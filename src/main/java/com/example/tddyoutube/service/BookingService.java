@@ -16,6 +16,9 @@ public class BookingService {
     public int daysCalculatorWithDatabase(String name) {
         Optional<Booking> bookingOptional = bookingRepository.findByReserveName(name);
 
-        return Period.between(bookingOptional.get().getCheckIn(), bookingOptional.get().getCheckOut()).getDays();
+        return bookingOptional.map(booking ->
+                Period.between(booking.getCheckIn(), booking.getCheckOut())
+                        .getDays())
+                .orElse(0);
     }
 }
